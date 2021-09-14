@@ -3,6 +3,12 @@ class GameEngine
    @grid = grid
   end
 
+  def seed_game_grid(coordinates_to_seed)
+    coordinates_to_seed.each do |coordinates|
+      @grid[coordinates[:x]][coordinates[:y]].revive
+    end
+   end
+
   def run_next_tick()
     visual_grid = String.new
     @grid.each_with_index do |row, row_index|
@@ -13,4 +19,5 @@ class GameEngine
     end
     return visual_grid
   end
+
 end
