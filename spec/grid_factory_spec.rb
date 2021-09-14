@@ -14,8 +14,11 @@ describe 'GridFactory' do
       end
 
       result.each_with_index do |row, index| 
-        it "row #{index} has #{number_of_columns} columns" do
+        it "row #{index +1} has #{number_of_columns} columns" do
           expect(row.length).to eq(number_of_columns)
+        end
+        it "row #{index + 1} contains dead cells" do
+          expect(row).to all(be_a(Cell))
         end
       end
     end

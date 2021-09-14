@@ -33,8 +33,25 @@ describe 'Cell' do
     context "given cell is dead" do
       underTest = Cell.new()
       underTest.kill
-      it "it is alrive and returns true" do
+      it "it is alive and returns true" do
         expect(underTest.is_alive?).to eq(false)
+      end
+    end
+  end
+
+  describe ".display cell" do
+    context "given the cell is dead" do
+      underTest = Cell.new()
+      underTest.kill
+      it "is displayed as unicode u26AB" do
+        expect(underTest.display_cell).to eq("\u26AB")
+      end
+    end
+    context "given the cell is alive" do
+      underTest = Cell.new()
+      underTest.revive
+      it "is displayed as unicode u26AA" do
+        expect(underTest.display_cell).to eq("\u26AA")
       end
     end
   end

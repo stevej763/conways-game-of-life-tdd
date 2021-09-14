@@ -1,3 +1,5 @@
+require 'cell'
+
 class GridFactory
   def build(row_count, cells_per_row)
     grid = []
