@@ -3,8 +3,8 @@ class Cell
   LIVING = "\u26AA"
   DEAD = "\u26AB"
 
-  def initialize(living)
-    @alive = living
+  def initialize()
+    @alive = false
     @living_next_tick
   end
 
