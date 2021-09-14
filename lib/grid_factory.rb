@@ -1,4 +1,4 @@
-require 'cell'
+require './cell'
 
 class GridFactory
   def build(row_count, cells_per_row)

@@ -7,7 +7,6 @@ describe 'GameEngine' do
   dead_cell = Cell::DEAD
   live_cell = Cell::LIVING
   cell_proximity_service = CellProximityService.new
-
   describe ".seed_game_grid" do
     context "set cell 1,1 to alive" do
       number_of_columns = 3
@@ -112,31 +111,101 @@ describe 'GameEngine' do
       underTest = GameEngine.new(grid, cell_proximity_service)
       underTest.seed_game_grid([GridCoordinate.new(1,1)])
 
-      it "displays a #{number_of_rows}x#{number_of_columns} grid with one live cell" do
+      it "displays a #{number_of_rows}x#{number_of_columns} grid with no living cells" do
+        puts underTest.get_current_grid
         underTest.run_next_tick
+        puts underTest.get_current_grid
         expected = "#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
 
         expect(underTest.get_current_grid).to eq(expected)
       end
     end
 
-    # context "A cell with 2 neighbours lives on the next tick" do
-    #   number_of_columns = 3
-    #   number_of_rows = 3
-    #   grid = GridFactory.new.build(number_of_rows, number_of_columns)
-    #   underTest = GameEngine.new(grid, cell_proximity_service)
-    #   underTest.seed_game_grid([
-    #     GridCoordinate.new(0,1),
-    #     GridCoordinate.new(1,1),
-    #     GridCoordinate.new(2,1)
-    #     ])
+    context "Living cells with 2 neighbours live on the next tick" do
+      number_of_columns = 3
+      number_of_rows = 3
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)
+      underTest = GameEngine.new(grid, cell_proximity_service)
+      underTest.seed_game_grid([
+        GridCoordinate.new(0,1),
+        GridCoordinate.new(1,1),
+        GridCoordinate.new(2,1)
+        ])
 
-    #   it "displays a #{number_of_rows}x#{number_of_columns} grid with one live cell" do
-    #     underTest.run_next_tick
-    #     expected = "#{live_cell+live_cell+live_cell}\n#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
+      it "displays a #{number_of_rows}x#{number_of_columns} grid with the cell still alive" do
+        puts underTest.get_current_grid
+        underTest.run_next_tick
+        puts underTest.get_current_grid
+        expected = "#{dead_cell+dead_cell+dead_cell}\n#{live_cell+live_cell+live_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
+        expect(underTest.get_current_grid).to eq(expected)
+      end
+    end
 
-    #     expect(underTest.get_current_grid).to eq(expected)
-    #   end
-    # end
+    context "Living cells with 3 neighbours live on the next tick" do
+      number_of_columns = 3
+      number_of_rows = 3
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)
+      underTest = GameEngine.new(grid, cell_proximity_service)
+      underTest.seed_game_grid([
+        GridCoordinate.new(0,2),
+        GridCoordinate.new(1,1),
+        GridCoordinate.new(2,0),
+        GridCoordinate.new(2,2)
+        ])
+
+      it "displays a #{number_of_rows}x#{number_of_columns} grid with the cell still alive" do
+        puts underTest.get_current_grid
+        underTest.run_next_tick
+        puts underTest.get_current_grid
+        expected = "#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+live_cell+live_cell}\n#{dead_cell+live_cell+dead_cell}\n"
+
+        expect(underTest.get_current_grid).to eq(expected)
+      end
+    end
+
+    context "Living cells with more than 3 neighbours die on the next tick" do
+      number_of_columns = 3
+      number_of_rows = 3
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)
+      underTest = GameEngine.new(grid, cell_proximity_service)
+      underTest.seed_game_grid([
+        GridCoordinate.new(0,0),
+        GridCoordinate.new(0,2),
+        GridCoordinate.new(1,1),
+        GridCoordinate.new(2,0),
+        GridCoordinate.new(2,2)
+        ])
+
+      it "displays a #{number_of_rows}x#{number_of_columns} grid with no live cells" do
+        puts underTest.get_current_grid
+        underTest.run_next_tick
+        puts underTest.get_current_grid
+        expected = "#{dead_cell+live_cell+dead_cell}\n#{live_cell+dead_cell+live_cell}\n#{dead_cell+live_cell+dead_cell}\n"
+        expect(underTest.get_current_grid).to eq(expected)
+      end
+    end
+
+    context "Dead cells with 3 neighbours live on the next tick" do
+      number_of_columns = 3
+      number_of_rows = 3
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)
+      underTest = GameEngine.new(grid, cell_proximity_service)
+      underTest.seed_game_grid([
+        GridCoordinate.new(0,0),
+        GridCoordinate.new(0,2),
+        GridCoordinate.new(1,1),
+        GridCoordinate.new(2,0),
+        GridCoordinate.new(2,2)
+        ])
+
+      it "displays a #{number_of_rows}x#{number_of_columns} grid with no live cells" do
+        puts underTest.get_current_grid
+        underTest.run_next_tick
+        puts underTest.get_current_grid
+        expected = "#{dead_cell+live_cell+dead_cell}\n#{live_cell+dead_cell+live_cell}\n#{dead_cell+live_cell+dead_cell}\n"
+
+        expect(underTest.get_current_grid).to eq(expected)
+      end
+    end
   end
 end
