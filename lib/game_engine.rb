@@ -1,4 +1,4 @@
-require './grid_coordinate'
+require_relative 'grid_coordinate'
 
 class GameEngine
   def initialize(grid, cell_proximity_service)
@@ -12,7 +12,11 @@ class GameEngine
     end
   end
 
-  def get_current_grid
+  def get_grid
+    return @grid
+  end
+
+  def get_printable_grid
     visual_grid = String.new
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
@@ -26,20 +30,17 @@ class GameEngine
   def run_next_tick
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
-        
         cell_position = GridCoordinate.new(row_index, column_index)
         living_neighbours = @cell_proximity_service.get_surrounding_cell_status(cell_position, @grid)
-        if living_neighbours < 2
-          cell.set_next_state(false)
-        elsif cell.is_alive? && (living_neighbours == 2 || living_neighbours == 3)
-          cell.set_next_state(true)
-        elsif !cell.is_alive? && living_neighbours == 3
-          cell.set_next_state(true)
-        end
+        implementSurvivalRules(cell, living_neighbours)
       end
     end
     update_grid
-    return get_current_grid
+  end
+
+  def run_game
+    run_next_tick
+    return get_printable_grid 
   end
 
   def update_grid
@@ -47,6 +48,16 @@ class GameEngine
       row.each_with_index do |cell, column_index|
         cell.update_to_next_state
       end
+    end
+  end
+
+  def implementSurvivalRules(cell, living_neighbours)
+    if cell.is_alive? && (living_neighbours < 2 || living_neighbours > 3)
+      cell.set_next_state(false)
+    elsif cell.is_alive? && (living_neighbours == 2 || living_neighbours == 3)
+      cell.set_next_state(true)
+    elsif !cell.is_alive? && living_neighbours == 3
+      cell.set_next_state(true)
     end
   end
 end

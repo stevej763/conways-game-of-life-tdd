@@ -1,4 +1,4 @@
-require "cell_proximity_service"
+require "./lib/cell_proximity_service"
 require "grid_coordinate"
 require "grid_factory"
 
