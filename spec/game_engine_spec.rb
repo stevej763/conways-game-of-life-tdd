@@ -1,5 +1,6 @@
 require 'grid_factory'
 require 'game_engine'
+require 'grid_coordinate'
 
 describe 'GameEngine' do
   dead_cell = Cell::DEAD
@@ -9,7 +10,7 @@ describe 'GameEngine' do
     context "set cell 1,1 to alive" do
       number_of_columns = 3
       number_of_rows = 3
-      coordinates_to_seed = [{:x => 1, :y => 1}]
+      coordinates_to_seed = [GridCoordinate.new(1,1)]
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
       
       it "displays a #{number_of_rows}x#{number_of_columns} grid with one live cell at [1,1]" do
@@ -27,8 +28,8 @@ describe 'GameEngine' do
       number_of_columns = 3
       number_of_rows = 3
       coordinates_to_seed = [
-        {:x => 0, :y => 0},
-        {:x => 1, :y => 1}
+        GridCoordinate.new(0,0),
+        GridCoordinate.new(1,1)
       ]
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
 
@@ -47,15 +48,15 @@ describe 'GameEngine' do
       number_of_columns = 3
       number_of_rows = 3
       coordinates_to_seed = [
-        {:x => 0, :y => 0},
-        {:x => 0, :y => 1},
-        {:x => 0, :y => 2},
-        {:x => 1, :y => 0},
-        {:x => 1, :y => 1},
-        {:x => 1, :y => 2},
-        {:x => 2, :y => 0},
-        {:x => 2, :y => 1},
-        {:x => 2, :y => 2}
+        GridCoordinate.new(0, 0),
+        GridCoordinate.new(0, 1),
+        GridCoordinate.new(0, 2),
+        GridCoordinate.new(1, 0),
+        GridCoordinate.new(1, 1),
+        GridCoordinate.new(1, 2),
+        GridCoordinate.new(2, 0),
+        GridCoordinate.new(2, 1),
+        GridCoordinate.new(2, 2)
       ]
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
 

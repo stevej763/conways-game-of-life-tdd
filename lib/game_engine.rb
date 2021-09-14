@@ -5,7 +5,7 @@ class GameEngine
 
   def seed_game_grid(coordinates_to_seed)
     coordinates_to_seed.each do |coordinates|
-      @grid[coordinates[:x]][coordinates[:y]].revive
+      @grid[coordinates.get_x][coordinates.get_y].revive
     end
    end
 
