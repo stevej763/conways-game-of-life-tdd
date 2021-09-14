@@ -9,7 +9,7 @@ class GameEngine
     end
    end
 
-  def run_next_tick()
+  def run_next_tick
     visual_grid = String.new
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
