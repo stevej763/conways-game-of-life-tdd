@@ -24,7 +24,7 @@ class Cell
     return @id
   end
 
-  def set_living_next_tick(state)
+  def set_next_state(state)
     @living_next_tick = state
   end
 
@@ -34,6 +34,10 @@ class Cell
 
   def display_cell
     return @alive ? LIVING : DEAD
+  end
+
+  def ==(other)
+    return self.is_alive? == other.is_alive?
   end
 
 end

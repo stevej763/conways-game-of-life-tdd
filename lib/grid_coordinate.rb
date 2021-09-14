@@ -45,7 +45,7 @@ class GridCoordinate
   end
 
   def ==(other)
-    @x == other.get_x && @y == other.get_y
+    self.get_x == other.get_x && self.get_y == other.get_y
    end
 
 end
