@@ -12,4 +12,40 @@ class GridCoordinate
     return @y
   end
 
+  def get_top_left_neighbour()
+    return GridCoordinate.new(@x - 1, @y - 1)
+  end
+
+  def get_top_neighbour()
+    return GridCoordinate.new(@x - 1, @y)
+  end
+
+  def get_top_right_neighbour()
+    return GridCoordinate.new(@x - 1, @y + 1)
+  end
+
+  def get_left_neighbour
+    return GridCoordinate.new(@x, @y -1)
+  end
+
+  def get_right_neighbour
+    return GridCoordinate.new(@x, @y +1)
+  end
+
+  def get_bottom_left_neighbour()
+    return GridCoordinate.new(@x + 1, @y - 1)
+  end
+
+  def get_bottom_neighbour()
+    return GridCoordinate.new(@x + 1, @y)
+  end
+
+  def get_bottom_right_neighbour()
+    return GridCoordinate.new(@x + 1, @y + 1)
+  end
+
+  def ==(other)
+    @x == other.get_x && @y == other.get_y
+   end
+
 end
