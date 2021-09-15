@@ -1,4 +1,5 @@
 require_relative 'cell'
+require_relative 'game_grid'
 
 class GridFactory
   def build(row_count, cells_per_row)
@@ -9,6 +10,6 @@ class GridFactory
         grid[row_number] << Cell.new() #add a new initalized (dead) cell into the row (cells_per_row)
       end
     end
-    return grid
+    return GameGrid.new(grid, row_count, cells_per_row)
   end
 end

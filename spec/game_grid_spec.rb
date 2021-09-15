@@ -8,7 +8,7 @@ describe 'GameGrid' do
       number_of_rows = 3
       number_of_columns = 3
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_grid_as_array()
       it "has #{number_of_rows} rows" do
         expect(result.length).to eq(number_of_rows)
@@ -25,7 +25,7 @@ describe 'GameGrid' do
       number_of_rows = 5
       number_of_columns = 5
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_grid_as_array
       it "has #{number_of_rows} rows" do
         expect(result.length).to eq(number_of_rows)
@@ -42,7 +42,7 @@ describe 'GameGrid' do
       number_of_rows = 10
       number_of_columns = 10
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_grid_as_array
       it "has #{number_of_rows} rows" do
         expect(result.length).to eq(number_of_rows)
@@ -55,11 +55,29 @@ describe 'GameGrid' do
         end
       end
     end
-    context 'with 200 rows and 200 columns' do
-      number_of_rows = 200
-      number_of_columns = 200
+    context 'with 50 rows and 50 columns' do
+      number_of_rows = 50
+      number_of_columns = 50
       grid = GridFactory.new.build(number_of_rows, number_of_columns)
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
+      result = underTest.get_grid_as_array
+      it "has #{number_of_rows} rows" do
+        expect(result.length).to eq(number_of_rows)
+      end
+      context "each row has #{number_of_columns} columns" do
+        result.each_with_index do |row, index| 
+          it "row #{index +1} has #{number_of_columns} columns" do
+            expect(row.length).to eq(number_of_columns)
+          end
+        end
+      end
+    end
+
+    context 'with 25 rows and 160 columns' do
+      number_of_rows = 25
+      number_of_columns = 160
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_grid_as_array
       it "has #{number_of_rows} rows" do
         expect(result.length).to eq(number_of_rows)
@@ -80,7 +98,7 @@ describe 'GameGrid' do
       number_of_rows = 5
       number_of_columns = 5
       grid = GridFactory.new.build(number_of_rows, number_of_columns)  
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_row_count
       
       it "has #{number_of_rows} rows" do
@@ -91,7 +109,7 @@ describe 'GameGrid' do
       number_of_rows = 5
       number_of_columns = 10
       grid = GridFactory.new.build(number_of_rows, number_of_columns)  
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_row_count
       
       it "has #{number_of_rows} rows" do
@@ -106,7 +124,7 @@ describe 'GameGrid' do
       number_of_rows = 5
       number_of_columns = 5
       grid = GridFactory.new.build(number_of_rows, number_of_columns)  
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_cells_per_row
       
       it "has #{number_of_rows} cells per row" do
@@ -117,11 +135,23 @@ describe 'GameGrid' do
       number_of_rows = 5
       number_of_columns = 10
       grid = GridFactory.new.build(number_of_rows, number_of_columns)  
-      underTest = GameGrid.new(grid, number_of_rows, number_of_columns)
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
       result = underTest.get_cells_per_row
       
       it "has #{number_of_columns} cells per row" do
         expect(result).to eq(number_of_columns)
+      end
+    end
+
+    context "each column of a row contains a cell" do
+      number_of_rows = 5
+      number_of_columns = 10
+      grid = GridFactory.new.build(number_of_rows, number_of_columns)  
+      underTest = GameGrid.new(grid.get_grid_as_array, number_of_rows, number_of_columns)
+      underTest.get_grid_as_array.each_with_index do |row, index| 
+        it "row #{index + 1} contains dead cells" do
+          expect(row).to all(be_a(Cell))
+        end
       end
     end
   end

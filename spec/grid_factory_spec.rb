@@ -10,16 +10,11 @@ describe 'GridFactory' do
       underTest = GridFactory.new()
       result = underTest.build(number_of_rows, number_of_columns)
       it "has #{number_of_rows} rows" do
-        expect(result.length).to eq(number_of_rows)
+        expect(result.get_row_count).to eq(number_of_rows)
       end
 
-      result.each_with_index do |row, index| 
-        it "row #{index +1} has #{number_of_columns} columns" do
-          expect(row.length).to eq(number_of_columns)
-        end
-        it "row #{index + 1} contains dead cells" do
-          expect(row).to all(be_a(Cell))
-        end
+      it "has #{number_of_columns} columns" do
+        expect(result.get_cells_per_row).to eq(number_of_columns)
       end
     end
   end

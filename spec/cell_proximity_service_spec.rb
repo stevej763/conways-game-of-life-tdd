@@ -18,7 +18,7 @@ describe 'CellProximityService' do
     context "A cell has one living neighbour" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
+      grid.get_grid_as_array[0][0].revive
       underTest = CellProximityService.new
       it "returns 1" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -29,8 +29,10 @@ describe 'CellProximityService' do
     context "A cell has two living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
+      grid_array = grid.get_grid_as_array
+
+      grid_array[0][0].revive
+      grid_array[0][1].revive
       underTest = CellProximityService.new
       it "returns 2" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -41,9 +43,11 @@ describe 'CellProximityService' do
     context "A cell has three living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
+      grid_array = grid.get_grid_as_array
+
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
       underTest = CellProximityService.new
       it "returns 3" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -54,10 +58,11 @@ describe 'CellProximityService' do
     context "A cell has four living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
-      grid[1][0].revive
+      grid_array = grid.get_grid_as_array
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
+      grid_array[1][0].revive
       underTest = CellProximityService.new
       it "returns 4" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -68,11 +73,12 @@ describe 'CellProximityService' do
     context "A cell has five living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
-      grid[1][0].revive
-      grid[1][2].revive
+      grid_array = grid.get_grid_as_array
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
+      grid_array[1][0].revive
+      grid_array[1][2].revive
       underTest = CellProximityService.new
       it "returns 5" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -83,12 +89,13 @@ describe 'CellProximityService' do
     context "A cell has six living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
-      grid[1][0].revive
-      grid[1][2].revive
-      grid[2][0].revive
+      grid_array = grid.get_grid_as_array
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
+      grid_array[1][0].revive
+      grid_array[1][2].revive
+      grid_array[2][0].revive
       underTest = CellProximityService.new
       it "returns 6" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -98,13 +105,14 @@ describe 'CellProximityService' do
     context "A cell has seven living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
-      grid[1][0].revive
-      grid[1][2].revive
-      grid[2][0].revive
-      grid[2][1].revive
+      grid_array = grid.get_grid_as_array
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
+      grid_array[1][0].revive
+      grid_array[1][2].revive
+      grid_array[2][0].revive
+      grid_array[2][1].revive
       underTest = CellProximityService.new
       it "returns 7" do
         result = underTest.get_surrounding_cell_status(cell, grid)
@@ -115,14 +123,15 @@ describe 'CellProximityService' do
     context "A cell has eight living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
-      grid[0][0].revive
-      grid[0][1].revive
-      grid[0][2].revive
-      grid[1][0].revive
-      grid[1][2].revive
-      grid[2][0].revive
-      grid[2][1].revive
-      grid[2][2].revive
+      grid_array = grid.get_grid_as_array
+      grid_array[0][0].revive
+      grid_array[0][1].revive
+      grid_array[0][2].revive
+      grid_array[1][0].revive
+      grid_array[1][2].revive
+      grid_array[2][0].revive
+      grid_array[2][1].revive
+      grid_array[2][2].revive
       underTest = CellProximityService.new
       it "returns 8" do
         result = underTest.get_surrounding_cell_status(cell, grid)
