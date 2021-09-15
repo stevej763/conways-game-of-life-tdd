@@ -26,7 +26,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has two living neighbour" do
+    context "A cell has two living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -38,7 +38,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has three living neighbour" do
+    context "A cell has three living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -51,7 +51,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has four living neighbour" do
+    context "A cell has four living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -65,7 +65,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has five living neighbour" do
+    context "A cell has five living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -80,7 +80,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has six living neighbour" do
+    context "A cell has six living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -95,7 +95,7 @@ describe 'CellProximityService' do
         expect(result).to eq(6)
       end
     end
-    context "A cell has seven living neighbour" do
+    context "A cell has seven living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
@@ -112,7 +112,7 @@ describe 'CellProximityService' do
       end
     end
 
-    context "A cell has eight living neighbour" do
+    context "A cell has eight living neighbours" do
       cell = GridCoordinate.new(1,1)
       grid = GridFactory.new.build(3, 3)
       grid[0][0].revive
