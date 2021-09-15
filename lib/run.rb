@@ -2,7 +2,7 @@ require './game_engine'
 require './grid_factory'
 require './cell_proximity_service'
 
-grid = GridFactory.new.build(20,30)
+grid = GridFactory.new.build(30,50)
 game = GameEngine.new(grid, CellProximityService.new)
 
 tub_seed = [
@@ -75,14 +75,71 @@ pulsar_seed = [
   GridCoordinate.new(8,7),
 ]
 
+starting_x = 10
+starting_y = 2
+gospers_glider_gun_pulse = [
+  GridCoordinate.new(starting_x,starting_y),
+  GridCoordinate.new(starting_x,starting_y+1),
+  GridCoordinate.new(starting_x+1,starting_y),
+  GridCoordinate.new(starting_x+1,starting_y+1),
 
-game.seed_game_grid(pulsar_seed)
+  GridCoordinate.new(starting_x,starting_y+10),
+  GridCoordinate.new(starting_x+1,starting_y+10),
+  GridCoordinate.new(starting_x+2,starting_y+10),
+
+  GridCoordinate.new(starting_x-1,starting_y+11),
+  GridCoordinate.new(starting_x+2,starting_y+10),
+
+  GridCoordinate.new(starting_x-1,starting_y+11),
+  GridCoordinate.new(starting_x+3,starting_y+11),
+
+  GridCoordinate.new(starting_x-2,starting_y+12),
+  GridCoordinate.new(starting_x+4,starting_y+12),
+  GridCoordinate.new(starting_x-2,starting_y+13),
+  GridCoordinate.new(starting_x+4,starting_y+13),
+
+  GridCoordinate.new(starting_x+1,starting_y+14),
+
+  GridCoordinate.new(starting_x-1,starting_y+15),
+  GridCoordinate.new(starting_x+3,starting_y+15),
+
+  GridCoordinate.new(starting_x,starting_y+16),
+  GridCoordinate.new(starting_x+1,starting_y+16),
+  GridCoordinate.new(starting_x+2,starting_y+16),
+
+  GridCoordinate.new(starting_x+1,starting_y+17),
 
 
+  GridCoordinate.new(starting_x,starting_y+20),
+  GridCoordinate.new(starting_x-1,starting_y+20),
+  GridCoordinate.new(starting_x-2,starting_y+20),
+  GridCoordinate.new(starting_x,starting_y+21),
+  GridCoordinate.new(starting_x-1,starting_y+21),
+  GridCoordinate.new(starting_x-2,starting_y+21),
+
+  GridCoordinate.new(starting_x-3,starting_y+22),
+  GridCoordinate.new(starting_x+1,starting_y+22),
+
+  GridCoordinate.new(starting_x+1,starting_y+24),
+  GridCoordinate.new(starting_x+2,starting_y+24),
+  GridCoordinate.new(starting_x-3,starting_y+24),
+  GridCoordinate.new(starting_x-4,starting_y+24),
+
+  GridCoordinate.new(starting_x-2,starting_y+35),
+  GridCoordinate.new(starting_x-2,starting_y+34),
+  GridCoordinate.new(starting_x-1,starting_y+35),
+  GridCoordinate.new(starting_x-1,starting_y+34)
+]
+
+
+game.seed_game_grid(gospers_glider_gun_pulse)
+
+tick = 0
+puts game.get_printable_grid
 loop do
-  sleep 0.3
+  sleep 0.1
   puts game.run_game
   puts "".center(20, "-")
+  tick += 1
 end
 
-# puts game.get_printable_grid

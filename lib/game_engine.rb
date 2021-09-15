@@ -30,9 +30,11 @@ class GameEngine
   def run_next_tick
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
+        # puts "cell alive:#{cell.is_alive?}  x:#{row_index} y:#{column_index}"
         cell_position = GridCoordinate.new(row_index, column_index)
+        # puts "calculated position: x:#{cell_position.get_x} y:#{cell_position.get_y}"
         living_neighbours = @cell_proximity_service.get_surrounding_cell_status(cell_position, @grid)
-        implementSurvivalRules(cell, living_neighbours)
+        implementSurvivalRules(cell, living_neighbours, cell_position)
       end
     end
     update_grid
@@ -51,8 +53,12 @@ class GameEngine
     end
   end
 
-  def implementSurvivalRules(cell, living_neighbours)
-    if cell.is_alive? && (living_neighbours < 2 || living_neighbours > 3)
+  def implementSurvivalRules(cell, living_neighbours, cell_position)
+    if cell.is_alive? && (living_neighbours < 2)
+      # puts "killing cell at position #{cell_position} due to under population living neighbours: #{living_neighbours}"
+      cell.set_next_state(false)
+    elsif cell.is_alive? && living_neighbours > 3
+      # puts "killing cell at position #{cell_position} due to over population"
       cell.set_next_state(false)
     elsif cell.is_alive? && (living_neighbours == 2 || living_neighbours == 3)
       cell.set_next_state(true)

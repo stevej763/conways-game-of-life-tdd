@@ -12,6 +12,12 @@ class GridCoordinate
     return @y
   end
 
+
+  #   y    0 1 2
+  #   x=0 [0 1 1]
+  #   x=1 [1 0 1]
+  #   x=2 [1 1 1]
+
   def get_top_left_neighbour()
     return GridCoordinate.new(@x - 1, @y - 1)
   end
@@ -46,6 +52,10 @@ class GridCoordinate
 
   def ==(other)
     self.get_x == other.get_x && self.get_y == other.get_y
-   end
+  end
+
+  def to_s
+    puts "X:#{@x}, Y:#{@y}"
+  end
 
 end
