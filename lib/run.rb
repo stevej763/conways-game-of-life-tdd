@@ -142,4 +142,3 @@ loop do
   puts "".center(20, "-")
   tick += 1
 end
-

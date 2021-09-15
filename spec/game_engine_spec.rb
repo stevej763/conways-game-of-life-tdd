@@ -228,6 +228,69 @@ describe 'GameEngine' do
           expect(underTest.get_grid[1][2].is_alive?).to eq(true)
         end
       end
+
+      context "A square of cells survives on the next tick" do
+        number_of_columns = 4
+        number_of_rows = 4
+        grid = GridFactory.new.build(number_of_rows, number_of_columns)
+        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest.seed_game_grid([
+          GridCoordinate.new(1,1),
+          GridCoordinate.new(1,2),
+          GridCoordinate.new(2,1),
+          GridCoordinate.new(2,2)
+          ])
+  
+        it "displays a #{number_of_rows}x#{number_of_columns} grid with the square of cells still alive" do
+          puts "Before:"
+          puts underTest.get_printable_grid
+          underTest.run_next_tick
+          puts "After:"
+          puts underTest.get_printable_grid
+
+          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid[1][2].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][1].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][2].is_alive?).to eq(true)
+        end
+      end
+
+      context "two seperate squares of cells survive on the next tick" do
+        number_of_rows = 4
+        number_of_columns = 7
+        grid = GridFactory.new.build(number_of_rows, number_of_columns)
+        underTest = GameEngine.new(grid, cell_proximity_service)
+        puts "Double square"
+        underTest.seed_game_grid([
+          GridCoordinate.new(1,1),
+          GridCoordinate.new(1,2),
+          GridCoordinate.new(2,1),
+          GridCoordinate.new(2,2),
+
+          GridCoordinate.new(1,4),
+          GridCoordinate.new(1,5),
+          GridCoordinate.new(2,4),
+          GridCoordinate.new(2,5)
+          ])
+  
+        it "displays a #{number_of_rows}x#{number_of_columns} grid with both squares of cells still alive" do
+          puts "Before:"
+          puts underTest.get_printable_grid
+          underTest.run_next_tick
+          puts "After:"
+          puts underTest.get_printable_grid
+
+          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid[1][2].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][1].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][2].is_alive?).to eq(true)
+
+          expect(underTest.get_grid[1][4].is_alive?).to eq(true)
+          expect(underTest.get_grid[1][5].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][4].is_alive?).to eq(true)
+          expect(underTest.get_grid[2][5].is_alive?).to eq(true)
+        end
+      end
     end
   end
 end
