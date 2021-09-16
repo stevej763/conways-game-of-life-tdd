@@ -20,10 +20,6 @@ class Cell
     @alive = false
   end
 
-  def get_id
-    return @id
-  end
-
   def set_next_state(state)
     @living_next_tick = state
   end

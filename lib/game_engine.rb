@@ -1,14 +1,16 @@
 require_relative 'grid_coordinate'
+require_relative 'grid_printer_service'
 
 class GameEngine
-  def initialize(grid, cell_proximity_service)
+  def initialize(grid, cell_proximity_service, grid_printer_service)
    @grid = grid
    @cell_proximity_service = cell_proximity_service
+   @grid_printer_service = grid_printer_service
   end
 
   def seed_game_grid(coordinates_to_seed)
     coordinates_to_seed.each do |coordinates|
-      @grid[coordinates.get_x][coordinates.get_y].revive
+      @grid.get_grid_as_array[coordinates.get_x][coordinates.get_y].revive
     end
   end
 
@@ -16,23 +18,18 @@ class GameEngine
     return @grid
   end
 
+  def get_grid_array
+    return @grid.get_grid_as_array
+  end
+
   def get_printable_grid
-    visual_grid = String.new
-    @grid.each_with_index do |row, row_index|
-      row.each_with_index do |cell, column_index|
-        visual_grid += cell.display_cell
-      end
-      visual_grid += "\n"
-    end
-    return visual_grid
+    @grid_printer_service.print_visual_grid_from_array(@grid.get_grid_as_array)
   end
 
   def run_next_tick
-    @grid.each_with_index do |row, row_index|
+    @grid.get_grid_as_array.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
-        # puts "cell alive:#{cell.is_alive?}  x:#{row_index} y:#{column_index}"
         cell_position = GridCoordinate.new(row_index, column_index)
-        # puts "calculated position: x:#{cell_position.get_x} y:#{cell_position.get_y}"
         living_neighbours = @cell_proximity_service.get_surrounding_cell_status(cell_position, @grid)
         implementSurvivalRules(cell, living_neighbours, cell_position)
       end
@@ -46,7 +43,7 @@ class GameEngine
   end
 
   def update_grid
-    @grid.each_with_index do |row, row_index|
+    @grid.get_grid_as_array.each_with_index do |row, row_index|
       row.each_with_index do |cell, column_index|
         cell.update_to_next_state
       end
@@ -55,10 +52,8 @@ class GameEngine
 
   def implementSurvivalRules(cell, living_neighbours, cell_position)
     if cell.is_alive? && (living_neighbours < 2)
-      # puts "killing cell at position #{cell_position} due to under population living neighbours: #{living_neighbours}"
       cell.set_next_state(false)
     elsif cell.is_alive? && living_neighbours > 3
-      # puts "killing cell at position #{cell_position} due to over population"
       cell.set_next_state(false)
     elsif cell.is_alive? && (living_neighbours == 2 || living_neighbours == 3)
       cell.set_next_state(true)
