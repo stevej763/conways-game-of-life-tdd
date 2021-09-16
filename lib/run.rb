@@ -4,7 +4,7 @@ require './cell_proximity_service'
 require './grid_printer_service'
 require './grid_seeder_service'
 
-grid = GridFactory.new.build(30,50)
+grid = GridFactory.new.build(30,60)
 cell_proximity_service = CellProximityService.new
 grid_printer_service = GridPrinterService.new
 grid_seeder_service = GridSeederService.new
@@ -139,11 +139,8 @@ gospers_glider_gun = [
 
 game.seed_game_grid(gospers_glider_gun)
 
-tick = 0
-puts game.get_printable_grid
 loop do
   sleep 0.1
   puts game.run_game
   puts "".center(20, "-")
-  tick += 1
 end

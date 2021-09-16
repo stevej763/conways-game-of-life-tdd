@@ -9,6 +9,7 @@ class GameEngine
   end
 
   def seed_game_grid(coordinates_to_seed)
+    puts coordinates_to_seed
     return @grid_seeder_service.seed_game_grid(coordinates_to_seed, get_grid_array)
   end
 
@@ -20,7 +21,7 @@ class GameEngine
     return @grid.get_grid_as_array
   end
 
-  def get_printable_grid
+  def print_grid
     return @grid_printer_service.print_visual_grid_from_array(@grid.get_grid_as_array)
   end
 
@@ -37,7 +38,7 @@ class GameEngine
 
   def run_game
     run_next_tick
-    return get_printable_grid 
+    return print_grid 
   end
 
   def update_grid
