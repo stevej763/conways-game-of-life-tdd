@@ -25,4 +25,8 @@ class GameGrid
     return @cells_per_row-1
   end
 
+  def get_cell_at(row, cell)
+    return get_grid_as_array[row][cell]
+  end
+  
 end

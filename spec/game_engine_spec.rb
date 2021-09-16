@@ -1,113 +1,19 @@
 require 'grid_factory'
+require 'game_grid'
 require 'game_engine'
 require 'grid_coordinate'
 require 'cell_proximity_service'
+require 'grid_printer_service'
+require 'grid_seeder_service'
 
 describe 'GameEngine' do
   dead_cell = Cell::DEAD
   live_cell = Cell::LIVING
   cell_proximity_service = CellProximityService.new
-  describe ".seed_game_grid" do
-    context "set cell 1,1 to alive" do
-      number_of_columns = 3
-      number_of_rows = 3
-      coordinates_to_seed = [GridCoordinate.new(1,1)]
-      grid = GridFactory.new.build(number_of_rows, number_of_columns)
-      
-      it "displays a #{number_of_rows}x#{number_of_columns} grid with one live cell at [1,1]" do
-        underTest = GameEngine.new(grid, cell_proximity_service)
-        underTest.seed_game_grid(coordinates_to_seed)
-
-        result = underTest.get_printable_grid
-        expected = "#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+live_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
-        puts underTest.get_printable_grid
-        expect(result).to eq(expected)
-      end
-    end
-
-    context "set cell 1,1 and 0,0 to be alive" do
-      number_of_columns = 3
-      number_of_rows = 3
-      coordinates_to_seed = [
-        GridCoordinate.new(0,0),
-        GridCoordinate.new(1,1)
-      ]
-      grid = GridFactory.new.build(number_of_rows, number_of_columns)
-
-      it "displays a #{number_of_rows}x#{number_of_columns} grid with two live cells at [0,0] and [1,1]" do
-        underTest = GameEngine.new(grid, cell_proximity_service)
-        underTest.seed_game_grid(coordinates_to_seed)
-        puts underTest.get_printable_grid
-        result = underTest.get_printable_grid
-        expected = "#{live_cell+dead_cell+dead_cell}\n#{dead_cell+live_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
-
-        expect(result).to eq(expected)
-      end
-    end
-
-    context "set 9 cells to alive" do
-      number_of_columns = 3
-      number_of_rows = 3
-      coordinates_to_seed = [
-        GridCoordinate.new(0, 0),
-        GridCoordinate.new(0, 1),
-        GridCoordinate.new(0, 2),
-        GridCoordinate.new(1, 0),
-        GridCoordinate.new(1, 1),
-        GridCoordinate.new(1, 2),
-        GridCoordinate.new(2, 0),
-        GridCoordinate.new(2, 1),
-        GridCoordinate.new(2, 2)
-      ]
-      grid = GridFactory.new.build(number_of_rows, number_of_columns)
-
-      it "displays a #{number_of_rows}x#{number_of_columns} grid with two live cells at [0,0] and [1,1]" do
-        underTest = GameEngine.new(grid, cell_proximity_service)
-        underTest.seed_game_grid(coordinates_to_seed)
-        puts underTest.get_printable_grid
-        result = underTest.get_printable_grid
-        expected = "#{live_cell+live_cell+live_cell}\n#{live_cell+live_cell+live_cell}\n#{live_cell+live_cell+live_cell}\n"
-       
-        expect(result).to eq(expected)
-      end
-    end
-  end
+  grid_printer_service = GridPrinterService.new
+  grid_seeder_service = GridSeederService.new
 
   describe '.run_next_tick' do
-
-    describe 'dead grids are generated on next tick' do
-
-      context "A 3x3 grid with dead cells" do
-        number_of_columns = 3
-        number_of_rows = 3
-        
-        grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        expected = "#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
-  
-        it "displays a #{number_of_rows}x#{number_of_columns} grid with dead cells" do
-          underTest = GameEngine.new(grid, cell_proximity_service)
-          underTest.run_next_tick
-          result = underTest.get_printable_grid
-          
-          expect(result).to eq(expected)
-        end
-      end
-
-      context "A 5x5 grid with dead cells" do
-        number_of_columns = 5
-        number_of_rows = 5
-        grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        expected = "#{dead_cell+dead_cell+dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell+dead_cell+dead_cell}\n"
-  
-        it "displays a #{number_of_rows}x#{number_of_columns} grid with dead cells" do
-          underTest = GameEngine.new(grid, cell_proximity_service)
-          underTest.run_next_tick
-          result = underTest.get_printable_grid
-          
-          expect(result).to eq(expected)
-        end
-      end
-    end
 
     describe 'cell death rules:' do
 
@@ -115,7 +21,7 @@ describe 'GameEngine' do
         number_of_columns = 3
         number_of_rows = 3
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([GridCoordinate.new(1,1)])
   
         it "dies on next tick" do
@@ -125,7 +31,7 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
           expected = "#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n#{dead_cell+dead_cell+dead_cell}\n"
-          cell = underTest.get_grid[1][1]
+          cell = underTest.get_grid_array[1][1]
           expect(cell.is_alive?).to eq(false)
         end
       end
@@ -134,7 +40,7 @@ describe 'GameEngine' do
         number_of_columns = 3
         number_of_rows = 3
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(0,0),
           GridCoordinate.new(0,2),
@@ -150,11 +56,11 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
 
-          expect(underTest.get_grid[0][0].is_alive?).to eq(false)
-          expect(underTest.get_grid[0][2].is_alive?).to eq(false)
-          expect(underTest.get_grid[1][1].is_alive?).to eq(false)
-          expect(underTest.get_grid[2][0].is_alive?).to eq(false)
-          expect(underTest.get_grid[2][2].is_alive?).to eq(false)
+          expect(underTest.get_grid_array[0][0].is_alive?).to eq(false)
+          expect(underTest.get_grid_array[0][2].is_alive?).to eq(false)
+          expect(underTest.get_grid_array[1][1].is_alive?).to eq(false)
+          expect(underTest.get_grid_array[2][0].is_alive?).to eq(false)
+          expect(underTest.get_grid_array[2][2].is_alive?).to eq(false)
         end
       end
     end
@@ -164,7 +70,7 @@ describe 'GameEngine' do
         number_of_columns = 3
         number_of_rows = 3
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(0,0),
           GridCoordinate.new(0,2),
@@ -178,7 +84,7 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
    
-          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][1].is_alive?).to eq(true)
         end
       end
     end
@@ -188,7 +94,7 @@ describe 'GameEngine' do
         number_of_columns = 3
         number_of_rows = 3
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(0,1),
           GridCoordinate.new(1,1),
@@ -202,7 +108,7 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
 
-          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][1].is_alive?).to eq(true)
         end
       end
 
@@ -210,7 +116,7 @@ describe 'GameEngine' do
         number_of_columns = 3
         number_of_rows = 3
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(0,2),
           GridCoordinate.new(1,1),
@@ -225,7 +131,7 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
 
-          expect(underTest.get_grid[1][2].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][2].is_alive?).to eq(true)
         end
       end
 
@@ -233,7 +139,7 @@ describe 'GameEngine' do
         number_of_columns = 4
         number_of_rows = 4
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(1,1),
           GridCoordinate.new(1,2),
@@ -248,10 +154,10 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
 
-          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
-          expect(underTest.get_grid[1][2].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][1].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][2].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][2].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][2].is_alive?).to eq(true)
         end
       end
 
@@ -259,8 +165,7 @@ describe 'GameEngine' do
         number_of_rows = 4
         number_of_columns = 7
         grid = GridFactory.new.build(number_of_rows, number_of_columns)
-        underTest = GameEngine.new(grid, cell_proximity_service)
-        puts "Double square"
+        underTest = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
         underTest.seed_game_grid([
           GridCoordinate.new(1,1),
           GridCoordinate.new(1,2),
@@ -280,15 +185,15 @@ describe 'GameEngine' do
           puts "After:"
           puts underTest.get_printable_grid
 
-          expect(underTest.get_grid[1][1].is_alive?).to eq(true)
-          expect(underTest.get_grid[1][2].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][1].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][2].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][2].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][1].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][2].is_alive?).to eq(true)
 
-          expect(underTest.get_grid[1][4].is_alive?).to eq(true)
-          expect(underTest.get_grid[1][5].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][4].is_alive?).to eq(true)
-          expect(underTest.get_grid[2][5].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][4].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[1][5].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][4].is_alive?).to eq(true)
+          expect(underTest.get_grid_array[2][5].is_alive?).to eq(true)
         end
       end
     end

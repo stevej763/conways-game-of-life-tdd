@@ -2,11 +2,13 @@ require './game_engine'
 require './grid_factory'
 require './cell_proximity_service'
 require './grid_printer_service'
+require './grid_seeder_service'
 
 grid = GridFactory.new.build(30,50)
 cell_proximity_service = CellProximityService.new
 grid_printer_service = GridPrinterService.new
-game = GameEngine.new(grid, cell_proximity_service, grid_printer_service)
+grid_seeder_service = GridSeederService.new
+game = GameEngine.new(grid, cell_proximity_service, grid_printer_service, grid_seeder_service)
 
 tub_seed = [
   GridCoordinate.new(0,0),
@@ -135,7 +137,7 @@ gospers_glider_gun = [
 ]
 
 
-game.seed_game_grid(glider_seed)
+game.seed_game_grid(gospers_glider_gun)
 
 tick = 0
 puts game.get_printable_grid
